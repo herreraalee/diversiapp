@@ -77,24 +77,20 @@ app.delete('/api/inventario/:id', (req, res) => {
 
 // Ruta raíz (importante tenerla explícita)
 // Ruta raíz
+// Ruta raíz
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// ← REEMPLAZA la línea app.get('*', ...) por este bloque ↓
-app.use((req, res, next) => {
-    if (!req.path.startsWith('/api/')) {
-        res.sendFile(path.join(__dirname, 'index.html'));
-    } else {
-        next();
-    }
+// Catch-all para cualquier otra ruta (funciona perfecto con Express 4)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
-// ← fin del bloque
 
-// INICIAR SERVIDOR (¡¡¡con 0.0.0.0!!!)
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`DIVERSIAPP corriendo en el puerto ${PORT}`);
-    console.log(`URL → https://diversiapp.up.railway.app`);
+    console.log(`DIVERSIAPP corriendo en puerto ${PORT}`);
+    console.log(`URL: https://diversiapp.up.railway.app`);
 });
+
 
 
