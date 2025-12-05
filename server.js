@@ -1,4 +1,4 @@
-// server.js → VERSIÓN DEFINITIVA QUE FUNCIONA EN RAILWAY 2025
+// server.js → ORDEN CORREGIDO PARA RAILWAY (copia desde aquí)
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
@@ -7,12 +7,14 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middlewares
+// Middlewares (ESTE ORDEN ES CLAVE)
 app.use(express.json());
 app.use(cors());
+
+// ¡¡PRIMER CAMBIO: express.static AL PRINCIPIO!! (sirve index.html, css, js automáticamente)
 app.use(express.static(__dirname));
 
-// Base de datos
+// Base de datos (sin cambios)
 const db = new sqlite3.Database('./diversi.db', (err) => {
     if (err) console.error('Error BD:', err);
     else console.log('Base de datos diversi.db conectada');
@@ -32,7 +34,7 @@ db.serialize(() => {
     )`);
 });
 
-// === RUTAS API ===
+// Rutas API (sin cambios)
 app.get('/api/ventas', (req, res) => {
     db.all('SELECT * FROM ventas ORDER BY id DESC', [], (err, rows) => res.json(rows || []));
 });
@@ -75,22 +77,22 @@ app.delete('/api/inventario/:id', (req, res) => {
     db.run('DELETE FROM inventario WHERE id=?', req.params.id, () => res.json({ success: true }));
 });
 
-// ¡¡CLAVE PARA RAILWAY!! Health check que confirma que el servidor está vivo
+// Health check (sin cambios)
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok', message: 'DIVERSIAPP viva y funcionando en Railway' });
 });
 
-// Ruta raíz
+// ¡¡SEGUNDO CAMBIO: Rutas de SPA al final, como fallback!! (no usar * en get)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Catch-all para SPA (cualquier ruta sirve index.html)
-app.get('*', (req, res) => {
+// Fallback middleware para cualquier ruta no encontrada (SPA routing)
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// INICIAR SERVIDOR
+// Iniciar servidor (sin cambios)
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`DIVERSIAPP corriendo en puerto ${PORT}`);
     console.log(`URL: https://diversiapp.up.railway.app`);
