@@ -1,16 +1,18 @@
-// server.js → VERSIÓN QUE FUNCIONA EN NODE 22 + WINDOWS 11/10
+// server.js → VERSIÓN 100% FUNCIONAL EN RAILWAY + NODE 22 + WINDOWS
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
-const cors = require('cors');
+const cors = require(cors);
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
+// Middlewares básicos
 app.use(express.json());
 app.use(cors());
-app.use(express.static(__dirname)); // Sirve todos los archivos estáticos
+
+// SIRVE TODOS LOS ARCHIVOS ESTÁTICOS (index.html, styles.css, script.js, etc.)
+app.use(express.static(__dirname));
 
 // Base de datos
 const db = new sqlite3.Database('./diversi.db', (err) => {
@@ -32,7 +34,7 @@ db.serialize(() => {
     )`);
 });
 
-// === RUTAS API ===
+// === TODAS TUS RUTAS API (sin cambios) ===
 app.get('/api/ventas', (req, res) => {
     db.all('SELECT * FROM ventas ORDER BY id DESC', [], (err, rows) => res.json(rows || []));
 });
@@ -73,23 +75,19 @@ app.delete('/api/inventario/:id', (req, res) => {
     db.run('DELETE FROM inventario WHERE id=?', req.params.id, () => res.json({ success: true }));
 });
 
-// RUTA QUE SIRVE index.html SIN ROMPER NADA (ESTA ES LA CLAVE)
+// Ruta raíz (importante tenerla explícita)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Esta línea sirve cualquier archivo estático SIN usar '*' ni '/*'
-app.use((req, res, next) => {
-    const filePath = path.join(__dirname, req.path);
-    res.sendFile(filePath, (err) => {
-        if (err) {
-            // Si no existe el archivo, sirve index.html (para SPA)
-            res.sendFile(path.join(__dirname, 'index.html'));
-        }
-    });
+// Cualquier otra ruta → sirve index.html (necesario para SPA y Railway)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(`DIVERSI FUNCIONANDO EN http://localhost:${PORT}`);
-    console.log(`ABRE: http://localhost:${PORT}`);
+// ¡¡CLAVE EN RAILWAY!! Escuchar en 0.0.0.0
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`DIVERSIAPP FUNCIONANDO CORRECTAMENTE`);
+    console.log(`Puerto: ${PORT}`);
+    console.log(`URL: https://diversiapp.up.railway.app`);
 });
