@@ -1,7 +1,7 @@
 // server.js → VERSIÓN 100% FUNCIONAL EN RAILWAY + NODE 22 + WINDOWS
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
-const cors = require(cors);
+const cors = require('cors');
 const path = require('path');
 
 const app = express();
@@ -91,3 +91,4 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`Puerto: ${PORT}`);
     console.log(`URL: https://diversiapp.up.railway.app`);
 });
+
