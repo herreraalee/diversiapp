@@ -76,19 +76,25 @@ app.delete('/api/inventario/:id', (req, res) => {
 });
 
 // Ruta raíz (importante tenerla explícita)
+// Ruta raíz
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Cualquier otra ruta → sirve index.html (necesario para SPA y Railway)
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+// ← REEMPLAZA la línea app.get('*', ...) por este bloque ↓
+app.use((req, res, next) => {
+    if (!req.path.startsWith('/api/')) {
+        res.sendFile(path.join(__dirname, 'index.html'));
+    } else {
+        next();
+    }
+});
+// ← fin del bloque
+
+// INICIAR SERVIDOR (¡¡¡con 0.0.0.0!!!)
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`DIVERSIAPP corriendo en el puerto ${PORT}`);
+    console.log(`URL → https://diversiapp.up.railway.app`);
 });
 
-// ¡¡CLAVE EN RAILWAY!! Escuchar en 0.0.0.0
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`DIVERSIAPP FUNCIONANDO CORRECTAMENTE`);
-    console.log(`Puerto: ${PORT}`);
-    console.log(`URL: https://diversiapp.up.railway.app`);
-});
 
