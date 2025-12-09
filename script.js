@@ -179,25 +179,46 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.delete-btn').forEach(b => b.onclick = eliminarVenta);
     }
 
-    function renderInventario() {
-        tablaInventarioBody.innerHTML = '';
-        inventario.forEach(i => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${i.nombre}</td><td><button class="edit-inv" data-id="${i.id}">Editar</button> <button class="del-inv" data-id="${i.id}">Eliminar</button></td>`;
-            tablaInventarioBody.appendChild(tr);
-        });
-        document.querySelectorAll('.edit-inv').forEach(b => b.onclick = () => {
-            inputProductoNombre.value = inventario.find(x => x.id == b.dataset.id).nombre;
-            editingInventarioId = b.dataset.id;
-            btnAgregarInventario.textContent = 'Actualizar Producto';
-        });
-        document.querySelectorAll('.del-inv').forEach(b => b.onclick = async() => {
-            if (confirm('¿Eliminar del inventario?')) {
-                await fetch(`/api/inventario/${b.dataset.id}`, { method: 'DELETE' });
+   function renderInventario() {
+    tablaInventarioBody.innerHTML = '';
+    inventario.forEach(i => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${i.nombre}</td>
+            <td style="text-align:center; font-weight:bold; font-size:1.3rem;">
+                <button class="btn-cantidad" data-id="${i.id}" data-cambio="-1">-</button>
+                <span style="margin:0 15px;">${i.cantidad}</span>
+                <button class="btn-cantidad" data-id="${i.id}" data-cambio="1">+</button>
+            </td>
+            <td><button class="delete-btn" data-id="${i.id}">Eliminar</button></td>
+        `;
+        tablaInventarioBody.appendChild(tr);
+    });
+
+    // Botones + y -
+    document.querySelectorAll('.btn-cantidad').forEach(btn => {
+        btn.onclick = async () => {
+            const id = btn.dataset.id;
+            const cambio = parseInt(btn.dataset.cambio);
+            await fetch(`/api/inventario/cantidad/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cambio })
+            });
+            cargarTodo();
+        };
+    });
+
+    // Eliminar
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = async () => {
+            if (confirm('¿Eliminar este producto del inventario?')) {
+                await fetch(`/api/inventario/${btn.dataset.id}`, { method: 'DELETE' });
                 cargarTodo();
             }
-        });
-    }
+        };
+    });
+}
 
     function editarVenta(e) {
         const v = ventas.find(x => x.id == e.target.dataset.id);
@@ -282,4 +303,5 @@ document.addEventListener('DOMContentLoaded', () => {
             options: { responsive: true, scales: { y: { ticks: { color: '#fff' } }, x: { ticks: { color: '#fff' } } } }
         });
     }
+
 });
