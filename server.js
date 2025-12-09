@@ -28,10 +28,12 @@ db.serialize(() => {
         comision_videos REAL, comision_mensajes REAL,
         neto REAL, guia TEXT, tipo_envio TEXT
     )`);
-    db.run(`CREATE TABLE IF NOT EXISTS inventario (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT UNIQUE
-    )`);
+    // Reemplaza la tabla inventario antigua por esta:
+db.run(`CREATE TABLE IF NOT EXISTS inventario (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT UNIQUE,
+    cantidad INTEGER DEFAULT 0
+)`);
 });
 
 // Rutas API (sin cambios)
@@ -98,3 +100,4 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`URL: https://diversiapp.up.railway.app`);
     console.log(`Health check: https://diversiapp.up.railway.app/health`);
 });
+
