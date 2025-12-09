@@ -150,22 +150,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    btnAgregarInventario.addEventListener('click', async() => {
-        const nombre = inputProductoNombre.value.trim();
-        if (!nombre) return alert('Escribe el nombre del producto');
-
-        try {
-            const method = editingInventarioId ? 'PUT' : 'POST';
-            const url = editingInventarioId ? `/api/inventario/${editingInventarioId}` : '/api/inventario';
-            await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nombre }) });
-            editingInventarioId = null;
-            btnAgregarInventario.textContent = 'Agregar al Inventario';
-            inputProductoNombre.value = '';
-            cargarTodo();
-        } catch (err) {
-            alert('Error en inventario: ' + err.message);
-        }
-    });
+    btnAgregarInventario.onclick = async () => {
+    const nombre = inputProductoNombre.value.trim();
+    const cantidad = parseInt(document.getElementById('productoCantidad').value) || 1;
+    if (nombre) {
+        await fetch('/api/inventario', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre, cantidad })
+        });
+        inputProductoNombre.value = '';
+        document.getElementById('productoCantidad').value = 1;
+        cargarTodo();
+    }
+};
 
     function renderVentas() {
         tablaBody.innerHTML = '';
@@ -305,3 +303,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
