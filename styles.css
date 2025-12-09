@@ -283,54 +283,103 @@ canvas {
 
 /* === INVENTARIO - INPUT Y BOTÓN PERFECTOS === */
 
+/* ===== INVENTARIO CON CANTIDAD - ESTILO PRO ===== */
 .inventario-input {
     display: flex;
     gap: 15px;
     margin: 25px 0;
-    align-items: end;
+    align-items: center;
     flex-wrap: wrap;
+    padding: 20px;
+    background: #0a0a0a;
+    border-radius: 16px;
+    border: 2px solid #00ffff44;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
 }
 
 #productoNombre {
-    flex: 1;
+    flex: 2;
     min-width: 280px;
-    padding: 14px 18px;
+    padding: 16px 20px;
     background: #1a1a1a;
     border: 2px solid #00ffff;
     border-radius: 12px;
     color: #00ffff;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-family: 'Poppins', sans-serif;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
     transition: all 0.3s ease;
 }
 
 #productoNombre:focus {
     outline: none;
     border-color: #00ffff;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+    background: #222;
+}
+
+#productoCantidad {
+    width: 140px;
+    padding: 16px 20px;
+    background: #1a1a1a;
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+    color: #00ffff;
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    transition: all 0.3s ease;
+}
+
+#productoCantidad:focus {
+    outline: none;
+    border-color: #00ffff;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
     background: #222;
 }
 
 #btnAgregarInventario {
-    padding: 14px 28px;
+    padding: 16px 32px;
     background: transparent;
     border: 2px solid #00ffff;
     color: #00ffff;
     border-radius: 12px;
     cursor: pointer;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
 }
 
 #btnAgregarInventario:hover {
     background: #00ffff22;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-    transform: translateY(-3px);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
+    transform: translateY(-3px) scale(1.05);
 }
 
-#btnAgregarInventario:active {
-    transform: translateY(1px);
+/* Botones + y - en la tabla */
+.btn-cantidad {
+    background: transparent;
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.btn-cantidad:hover {
+    background: #00ffff;
+    color: #000;
+    transform: scale(1.2);
+    box-shadow: 0 0 30px #00ffff;
+}
+
+.btn-cantidad:active {
+    transform: scale(0.95);
 }
