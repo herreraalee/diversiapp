@@ -383,3 +383,30 @@ canvas {
 .btn-cantidad:active {
     transform: scale(0.95);
 }
+/* ===== CENTRAR PERFECTO LOS BOTONES + Y - EN LA TABLA ===== */
+#tablaInventario td:nth-child(2) {
+    text-align: center !important;
+    vertical-align: middle;
+    padding: 20px 0;
+}
+
+/* Contenedor flex para que todo quede en línea y centrado */
+#tablaInventario td:nth-child(2) > div {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    background: #0a0a0a;
+    padding: 12px 20px;
+    border-radius: 16px;
+    border: 1px solid #00ffff33;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+}
+
+/* El número grande y brillante en el centro */
+#tablaInventario td:nth-child(2) span {
+    min-width: 60px;
+    font-size: 2rem !important;
+    font-weight: bold;
+    color: #00ffff;
+    text-shadow: 0 0 20px #00ffff;
+}
