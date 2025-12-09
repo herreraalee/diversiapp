@@ -120,26 +120,30 @@
             </section>
 
             <!-- INVENTARIO (CORREGIDO: YA NO CIERRA SESIÓN) -->
-            <section class="section">
-                <h2>Inventario</h2>
-                <div class="inventario-input">
-                    <input type="text" id="productoNombre" placeholder="Nombre del producto" required>
-                    <button type="button" id="btnAgregarInventario">Agregar al Inventario</button>
-                </div>
-                <table id="tablaInventario">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
+            <!-- INVENTARIO MEJORADO -->
+<section class="section">
+    <h2>Inventario con Cantidad</h2>
+    <div class="inventario-input">
+        <input type="text" id="productoNombre" placeholder="Nombre del producto" required>
+        <input type="number" id="productoCantidad" placeholder="Cantidad" value="1" min="1" style="width: 100px;">
+        <button type="button" id="btnAgregarInventario">Agregar</button>
+    </div>
+    <table id="tablaInventario">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</section>
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 
 </html>
