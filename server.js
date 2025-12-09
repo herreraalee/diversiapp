@@ -61,18 +61,26 @@ app.put('/api/ventas/:id', (req, res) => {
 app.delete('/api/ventas/:id', (req, res) => db.run('DELETE FROM ventas WHERE id=?', req.params.id, () => res.json({ success: true })));
 app.delete('/api/ventas', (req, res) => db.run('DELETE FROM ventas', () => res.json({ success: true })));
 
+// === INVENTARIO CON CANTIDAD ===
 app.get('/api/inventario', (req, res) => {
     db.all('SELECT * FROM inventario ORDER BY nombre', [], (err, rows) => res.json(rows || []));
 });
 
 app.post('/api/inventario', (req, res) => {
-    db.run('INSERT OR IGNORE INTO inventario (nombre) VALUES (?)', [req.body.nombre], function() {
-        res.json({ id: this.lastID || null });
-    });
+    const { nombre, cantidad } = req.body;
+    db.run('INSERT OR IGNORE INTO inventario (nombre, cantidad) VALUES (?, ?)', 
+        [nombre, cantidad || 1], 
+        function() { res.json({ id: this.lastID || null }); }
+    );
 });
 
-app.put('/api/inventario/:id', (req, res) => {
-    db.run('UPDATE inventario SET nombre=? WHERE id=?', [req.body.nombre, req.params.id], () => res.json({ success: true }));
+// Nuevo: sumar o restar cantidad
+app.put('/api/inventario/cantidad/:id', (req, res) => {
+    const { cambio } = req.body; // +1 o -1
+    db.run('UPDATE inventario SET cantidad = cantidad + ? WHERE id = ?', 
+        [cambio, req.params.id], 
+        () => res.json({ success: true })
+    );
 });
 
 app.delete('/api/inventario/:id', (req, res) => {
@@ -100,4 +108,5 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`URL: https://diversiapp.up.railway.app`);
     console.log(`Health check: https://diversiapp.up.railway.app/health`);
 });
+
 
